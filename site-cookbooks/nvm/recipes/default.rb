@@ -8,7 +8,7 @@ end
 bash "nvm.sh" do                                                     # nvm.shという名前のbash。
   code <<-EOH
     . /usr/local/nvm/nvm.sh                                      # nvmコマンドの読み込み
-    nvm install v0.10.1                                               # Node.js v0.10.1をインストール
+    nvm install v0.10.26                                               # Node.js v0.10.1をインストール
   EOH
   action :nothing                                                        # git cloneが終わるまで実行したくないのでnothingを指定。
 end

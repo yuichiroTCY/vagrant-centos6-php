@@ -14,7 +14,7 @@ bash "install npm packages" do
   user "root"
   code <<-EOH
     . /usr/local/nvm/nvm.sh
-    nvm use v0.10.1
+    nvm use v0.10.26
     npm install -g grunt-cli bower
   EOH
   action :nothing                                                                    # nvm.shの実行終了したら走らせるためnothingを指定
