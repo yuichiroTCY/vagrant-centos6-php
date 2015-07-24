@@ -11,11 +11,11 @@ include_recipe "nvm"
 
 bash "install npm packages" do
   cwd "/home/vagrant"
-  user "root"
+  user "vagrant"
   code <<-EOH
-    . /usr/local/nvm/nvm.sh
+    . /home/vagrant/.nvm/nvm.sh
     nvm use v0.10.26
-    npm install -g grunt-cli bower
+    npm install -g grunt-cli gulp-cli bower
   EOH
   action :nothing                                                                    # nvm.shの実行終了したら走らせるためnothingを指定
   subscribes :run, "bash[nvm.sh]", :delayed
@@ -24,14 +24,13 @@ end
 package "ruby-devel"
 
 bash 'install bundler' do
-  user "root"
   code <<-EOH
     gem install bundler
   EOH
 end
 
 bash 'install compass' do
-  user "root"
+  user "vagrant"
   cwd "/home/vagrant/fuelphp/foundation"
   code <<-EOH
     bundler install
