@@ -12,7 +12,8 @@ include_recipe "sendmail"
 
 bash "install npm packages" do
   cwd "/home/vagrant"
-  user "root"
+  user "vagrant"
+  group "vagrant"
   code <<-EOH
     su vagrant
     . /home/vagrant/.nvm/nvm.sh
@@ -27,14 +28,14 @@ end
 package "ruby-devel"
 
 bash 'install bundler' do
-  user "root"
   code <<-EOH
     gem install bundler
   EOH
 end
 
 bash 'install compass' do
-  user "root"
+  user "vagrant"
+  group "vagrant"
   cwd "/home/vagrant/fuelphp/foundation"
   code <<-EOH
     bundler install

@@ -23,7 +23,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # mailcatcher web
   config.vm.network :forwarded_port, guest: 1080, host: 1080
   # (optional) jenkins
-  #config.vm.network :forwarded_port, guest: 8080, host: 8080
+  config.vm.network :forwarded_port, guest: 8080, host: 8080
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -49,13 +49,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
-  # config.vm.provider :virtualbox do |vb|
-  #   # Don't boot with headless mode
-  #   vb.gui = true
-  #
-  #   # Use VBoxManage to customize the VM. For example to change memory:
-  #   vb.customize ["modifyvm", :id, "--memory", "1024"]
-  # end
+  config.vm.provider :virtualbox do |vb|
+    # Don't boot with headless mode
+    # vb.gui = true
+
+    # Use VBoxManage to customize the VM. For example to change memory:
+    vb.customize ["modifyvm", :id, "--memory", "1024"]
+
+    # Allow symlinks in synced folder
+    vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/mnt/project","1"]
+  end
   #
   # View the documentation for the provider you're using for more
   # information on available options.
@@ -65,7 +68,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # some recipes and/or roles.
   #
   config.vm.provision :chef_solo do |chef|
-     chef.cookbooks_path = "./cookbooks"
+     chef.cookbooks_path = ["./cookbooks", "./site-cookbooks"]
 
      chef.add_recipe "iptables"
      chef.add_recipe "scl"
@@ -91,18 +94,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
      #chef.add_recipe "mongodb"
      #chef.add_recipe "redis"
      #chef.add_recipe "elasticsearch"
-     #chef.add_recipe "jenkins"
+     chef.add_recipe "jenkins"
 
      chef.add_recipe "phpunit"
      chef.add_recipe "php-project"
 
      # (optional) Framework of your choice
      #chef.add_recipe "codeigniter"
-     #chef.add_recipe "fuelphp"
+     chef.add_recipe "fuelphp"
      #chef.add_recipe "phalcon"
 
      # (optional) Update all yum packages
      #chef.add_recipe "yum-update"
+
+     chef.add_recipe "setup"
 
   #   # You may also specify custom JSON attributes:
      chef.json = {
