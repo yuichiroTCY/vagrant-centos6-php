@@ -8,14 +8,17 @@
 #
 
 include_recipe "nvm"
+include_recipe "sendmail"
 
 bash "install npm packages" do
   cwd "/home/vagrant"
   user "root"
   code <<-EOH
-    . /usr/local/nvm/nvm.sh
-    nvm use v0.10.1
-    npm install -g grunt-cli bower
+    su vagrant
+    . /home/vagrant/.nvm/nvm.sh
+    nvm use v0.12.7
+    npm update -g
+    npm install -g gulp bower
   EOH
   action :nothing                                                                    # nvm.shの実行終了したら走らせるためnothingを指定
   subscribes :run, "bash[nvm.sh]", :delayed
